@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TimerCircle extends StatelessWidget {
-  const TimerCircle({super.key});
+  final String time;
+
+  const TimerCircle({super.key, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,9 @@ class TimerCircle extends StatelessWidget {
         border: Border.all(color: Colors.red, width: 8),
       ),
       alignment: Alignment.center,
-      child: const Text(
-        "25:00",
-        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+      child: Text(
+        time,
+        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
       ),
     );
   }
