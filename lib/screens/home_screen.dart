@@ -62,13 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final formattedTime = TimeFormatter.format(totalSeconds);
+    final maxSeconds = AppConstants.defaultFocusMinutes * 60;
 
     return Scaffold(
       appBar: AppBar(title: const Text("FocusFlow"), centerTitle: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TimerCircle(time: formattedTime),
+          TimerCircle(
+            time: formattedTime,
+            progress: 1 - (totalSeconds / maxSeconds),
+          ),
           const SizedBox(height: 40),
           ControlButtons(
             isRunning: isRunning,
