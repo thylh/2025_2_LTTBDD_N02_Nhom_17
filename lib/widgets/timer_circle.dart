@@ -58,7 +58,7 @@ class CirclePainter extends CustomPainter {
     canvas.drawArc(rect, -pi / 2, 2 * pi, false, basePaint);
 
     final progressPaint = Paint()
-      ..color = isBreak ? const Color(0xFF4CAF50) : const Color(0xFFE53935)
+      ..color = isBreak ? const Color(0xFF4CAF50) : const Color(0xFF000000)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;

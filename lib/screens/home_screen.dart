@@ -4,6 +4,7 @@ import '../widgets/timer_circle.dart';
 import '../widgets/control_buttons.dart';
 import '../utils/constants.dart';
 import '../utils/time_formatter.dart';
+import '../widgets/status_pill.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -111,52 +112,55 @@ class _HomeScreenState extends State<HomeScreen> {
     final formattedTime = TimeFormatter.format(totalSeconds);
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "FocusFlow",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-            color: Colors.black,
-          ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            RichText(
+              text: const TextSpan(
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.6,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Focus",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  TextSpan(
+                    text: "Flow",
+                    style: TextStyle(
+                      color: Color(0xFFE53935),
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 70),
+            StatusPill(
+              text: statusText,
+              isBreak: currentState == TimerState.breakTime,
+            ),
+
+            const SizedBox(height: 40),
+            TimerCircle(
+              time: formattedTime,
+              progress: progress,
+              isBreak: currentState == TimerState.breakTime,
+            ),
+            const SizedBox(height: 40),
+            ControlButtons(
+              isRunning: isRunning,
+              onStart: startTimer,
+              onPause: pauseTimer,
+              onReset: resetTimer,
+            ),
+          ],
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            statusText,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 20),
-          TimerCircle(
-            time: formattedTime,
-            progress: progress,
-            isBreak: currentState == TimerState.breakTime,
-          ),
-          const SizedBox(height: 40),
-          ControlButtons(
-            isRunning: isRunning,
-            onStart: startTimer,
-            onPause: pauseTimer,
-            onReset: resetTimer,
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Stats"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Settings",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.info), label: "About"),
-        ],
       ),
     );
   }
