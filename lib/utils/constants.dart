@@ -1,3 +1,4 @@
 class AppConstants {
-  static const int defaultFocusMinutes = 25;
+  static const int defaultFocusMinutes = 2;
+  static const int defaultBreakMinutes = 1;
 }
