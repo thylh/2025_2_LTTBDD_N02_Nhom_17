@@ -5,6 +5,7 @@ import '../widgets/control_buttons.dart';
 import '../utils/constants.dart';
 import '../utils/time_formatter.dart';
 import '../widgets/status_pill.dart';
+import '../widgets/animated_sky_background.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -111,57 +112,68 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final formattedTime = TimeFormatter.format(totalSeconds);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            RichText(
-              text: const TextSpan(
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.6,
-                ),
-                children: [
-                  TextSpan(
-                    text: "Focus",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  TextSpan(
-                    text: "Flow",
+    return Stack(
+      children: [
+        const AnimatedSkyBackground(),
+
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+
+                RichText(
+                  text: const TextSpan(
                     style: TextStyle(
-                      color: Color(0xFFE53935),
-                      fontStyle: FontStyle.italic,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.6,
                     ),
+                    children: [
+                      TextSpan(
+                        text: "Focus",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: "Flow",
+                        style: TextStyle(
+                          color: Color(0xFFE53935),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
 
-            const SizedBox(height: 70),
-            StatusPill(
-              text: statusText,
-              isBreak: currentState == TimerState.breakTime,
-            ),
+                const SizedBox(height: 70),
 
-            const SizedBox(height: 40),
-            TimerCircle(
-              time: formattedTime,
-              progress: progress,
-              isBreak: currentState == TimerState.breakTime,
+                StatusPill(
+                  text: statusText,
+                  isBreak: currentState == TimerState.breakTime,
+                ),
+
+                const SizedBox(height: 40),
+
+                TimerCircle(
+                  time: formattedTime,
+                  progress: progress,
+                  isBreak: currentState == TimerState.breakTime,
+                ),
+
+                const SizedBox(height: 40),
+
+                ControlButtons(
+                  isRunning: isRunning,
+                  onStart: startTimer,
+                  onPause: pauseTimer,
+                  onReset: resetTimer,
+                ),
+              ],
             ),
-            const SizedBox(height: 40),
-            ControlButtons(
-              isRunning: isRunning,
-              onStart: startTimer,
-              onPause: pauseTimer,
-              onReset: resetTimer,
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
