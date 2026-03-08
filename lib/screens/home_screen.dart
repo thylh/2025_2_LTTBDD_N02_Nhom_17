@@ -35,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void startTimer() {
     if (isRunning || currentState == TimerState.finished) return;
 
-    isRunning = true;
+    setState(() {
+      isRunning = true;
+      if (totalSeconds > 0) {
+        totalSeconds--;
+      }
+    });
 
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (totalSeconds > 0) {
@@ -57,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
         totalSeconds = breakSeconds;
       });
 
-      // Tự động bắt đầu break sau 2 giây
       Future.delayed(const Duration(seconds: 2), () {
         startTimer();
       });
@@ -70,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void pauseTimer() {
     timer?.cancel();
-    isRunning = false;
+    setState(() {
+      isRunning = false;
+    });
   }
 
   void resetTimer() {
@@ -128,7 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 1.6,
+                      letterSpacing: 2,
+                      shadows: [
+                        Shadow(
+                          color: Color(0x66E53935),
+                          blurRadius: 5,
+                          offset: Offset(0, 9),
+                        ),
+                      ],
                     ),
                     children: [
                       TextSpan(
@@ -136,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.black),
                       ),
                       TextSpan(
-                        text: "Flow",
+                        text: "Flow...",
                         style: TextStyle(
                           color: Color(0xFFE53935),
                           fontStyle: FontStyle.italic,

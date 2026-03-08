@@ -11,13 +11,13 @@ class StatusPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: isBreak ? const Color(0xFF4CAF50) : Colors.orange,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.25),
+            blurRadius: 5,
+            offset: const Offset(0, 6),
           ),
         ],
       ),

@@ -16,16 +16,44 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: isRunning ? onPause : onStart,
-          child: Text(isRunning ? "Pause" : "Start"),
-        ),
-        const SizedBox(width: 20),
-        ElevatedButton(onPressed: onReset, child: const Text("Reset")),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(
+        children: [
+          const Spacer(),
+
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: IconButton(
+              iconSize: 50,
+              padding: const EdgeInsets.all(18),
+              icon: Icon(
+                isRunning ? Icons.pause : Icons.play_arrow,
+                color: Colors.black,
+              ),
+              onPressed: isRunning ? onPause : onStart,
+            ),
+          ),
+
+          const Spacer(),
+
+          IconButton(
+            iconSize: 34,
+            icon: const Icon(Icons.refresh, color: Colors.black),
+            onPressed: onReset,
+          ),
+        ],
+      ),
     );
   }
 }

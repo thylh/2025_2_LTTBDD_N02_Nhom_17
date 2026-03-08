@@ -33,7 +33,7 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
   }
 
   Widget buildCloud(double screenWidth, int index) {
-    final top = random.nextDouble() * 350 + 10;
+    final top = random.nextDouble() * 360 + 10;
     final size = random.nextDouble() * 40 + 50;
     final speedOffset = random.nextDouble();
 

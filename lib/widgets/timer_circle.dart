@@ -27,7 +27,11 @@ class TimerCircle extends StatelessWidget {
           ),
           Text(
             time,
-            style: const TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 44,
+              fontWeight: FontWeight.bold,
+              color: isBreak ? const Color(0xFF4CAF50) : Colors.orange,
+            ),
           ),
         ],
       ),
@@ -58,7 +62,7 @@ class CirclePainter extends CustomPainter {
     canvas.drawArc(rect, -pi / 2, 2 * pi, false, basePaint);
 
     final progressPaint = Paint()
-      ..color = isBreak ? const Color(0xFF4CAF50) : const Color(0xFF000000)
+      ..color = isBreak ? const Color(0xFF4CAF50) : Colors.orange
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
