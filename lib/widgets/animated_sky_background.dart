@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AnimatedSkyBackground extends StatefulWidget {
@@ -8,36 +9,63 @@ class AnimatedSkyBackground extends StatefulWidget {
 }
 
 class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _cloudAnimation;
+    with TickerProviderStateMixin {
+  final Random random = Random();
+
+  late AnimationController controller;
+
+  final int cloudCount = 6;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 25),
+      duration: const Duration(seconds: 40),
     )..repeat();
-
-    _cloudAnimation = Tween<double>(begin: -200, end: 400).animate(_controller);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
+  }
+
+  Widget buildCloud(double screenWidth, int index) {
+    final top = random.nextDouble() * 350 + 10;
+    final size = random.nextDouble() * 40 + 50;
+    final speedOffset = random.nextDouble();
+
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        double movement =
+            (controller.value + speedOffset) % 1 * (screenWidth + 200) - 100;
+
+        return Positioned(
+          top: top,
+          left: movement,
+          child: Icon(
+            Icons.cloud,
+            size: size,
+            color: Colors.white.withValues(alpha: 0.9),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFE3F2FD), Color(0xFFFFFFFF)],
+              colors: [Color(0xFFE3F2FD), Color(0xFFBBDEFB), Color(0xFFFFFFFF)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -47,34 +75,22 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
         Positioned(
           top: 60,
           right: 40,
-          child: Icon(
-            Icons.wb_sunny,
-            size: 80,
-            color: Colors.orange.withOpacity(0.9),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withValues(alpha: 0.4),
+                  blurRadius: 40,
+                  spreadRadius: 10,
+                ),
+              ],
+            ),
+            child: const Icon(Icons.wb_sunny, size: 80, color: Colors.orange),
           ),
         ),
 
-        AnimatedBuilder(
-          animation: _cloudAnimation,
-          builder: (context, child) {
-            return Positioned(
-              top: 120,
-              left: _cloudAnimation.value,
-              child: const Icon(Icons.cloud, size: 60, color: Colors.white),
-            );
-          },
-        ),
-
-        AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Positioned(
-              top: 180,
-              left: _cloudAnimation.value - 250,
-              child: const Icon(Icons.cloud, size: 50, color: Colors.white),
-            );
-          },
-        ),
+        ...List.generate(cloudCount, (index) => buildCloud(screenWidth, index)),
       ],
     );
   }
