@@ -22,9 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isRunning = false;
 
   TimerState currentState = TimerState.working;
+  int pomodoroCount = 0;
 
   int get workSeconds => AppConstants.defaultFocusMinutes * 60;
   int get breakSeconds => AppConstants.defaultBreakMinutes * 60;
+  int get longBreakSeconds => AppConstants.defaultLongBreakMinutes * 60;
 
   @override
   void initState() {
@@ -34,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void startTimer() {
     if (isRunning || currentState == TimerState.finished) return;
+
+    timer?.cancel();
 
     setState(() {
       isRunning = true;
@@ -57,9 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void handlePhaseComplete() {
     if (currentState == TimerState.working) {
+      pomodoroCount++;
+
       setState(() {
         currentState = TimerState.breakTime;
-        totalSeconds = breakSeconds;
+
+        if (pomodoroCount % 4 == 0) {
+          totalSeconds = longBreakSeconds;
+        } else {
+          totalSeconds = breakSeconds;
+        }
       });
 
       Future.delayed(const Duration(seconds: 2), () {
@@ -67,7 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else if (currentState == TimerState.breakTime) {
       setState(() {
-        currentState = TimerState.finished;
+        currentState = TimerState.working;
+        totalSeconds = workSeconds;
+      });
+
+      Future.delayed(const Duration(seconds: 2), () {
+        startTimer();
       });
     }
   }
@@ -81,22 +97,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void resetTimer() {
     timer?.cancel();
+
     setState(() {
       currentState = TimerState.working;
       totalSeconds = workSeconds;
+      pomodoroCount = 0;
       isRunning = false;
     });
   }
 
   String get statusText {
-    switch (currentState) {
-      case TimerState.working:
-        return "🔥 Working... Stay focused!";
-      case TimerState.breakTime:
-        return "☕ Break time... Relax!";
-      case TimerState.finished:
-        return "✅ Hoàn thành 1 phiên Pomodoro!";
+    if (currentState == TimerState.working) {
+      return "🔥 Working... Stay focused!";
     }
+
+    if (currentState == TimerState.breakTime) {
+      if (pomodoroCount % 4 == 0) {
+        return "🌴 Long Break... Relax!";
+      }
+
+      return "☕ Short Break... Relax!";
+    }
+
+    return "✅ Pomodoro Finished!";
   }
 
   double get progress {
