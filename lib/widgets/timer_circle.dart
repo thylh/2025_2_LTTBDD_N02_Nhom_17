@@ -28,7 +28,7 @@ class TimerCircle extends StatelessWidget {
           Text(
             time,
             style: TextStyle(
-              fontSize: 44,
+              fontSize: 50,
               fontWeight: FontWeight.bold,
               color: isBreak ? const Color(0xFF4CAF50) : Colors.orange,
             ),

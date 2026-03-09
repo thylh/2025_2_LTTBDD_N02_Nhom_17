@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ControlButtons extends StatelessWidget {
   final bool isRunning;
+  final bool isBreak;
   final VoidCallback onStart;
   final VoidCallback onPause;
   final VoidCallback onReset;
@@ -9,6 +10,7 @@ class ControlButtons extends StatelessWidget {
   const ControlButtons({
     super.key,
     required this.isRunning,
+    required this.isBreak,
     required this.onStart,
     required this.onPause,
     required this.onReset,
@@ -16,41 +18,36 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color mainColor = isBreak ? const Color(0xFF4CAF50) : Colors.orange;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Row(
         children: [
-          const Spacer(),
+          Expanded(child: Container()),
 
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+          Expanded(
+            child: Center(
+              child: IconButton(
+                iconSize: 70,
+                icon: Icon(
+                  isRunning ? Icons.pause : Icons.play_arrow,
+                  color: mainColor,
                 ),
-              ],
-            ),
-            child: IconButton(
-              iconSize: 50,
-              padding: const EdgeInsets.all(18),
-              icon: Icon(
-                isRunning ? Icons.pause : Icons.play_arrow,
-                color: Colors.black,
+                onPressed: isRunning ? onPause : onStart,
               ),
-              onPressed: isRunning ? onPause : onStart,
             ),
           ),
 
-          const Spacer(),
-
-          IconButton(
-            iconSize: 34,
-            icon: const Icon(Icons.refresh, color: Colors.black),
-            onPressed: onReset,
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                iconSize: 36,
+                icon: Icon(Icons.refresh, color: mainColor),
+                onPressed: onReset,
+              ),
+            ),
           ),
         ],
       ),

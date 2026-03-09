@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 RichText(
                   text: const TextSpan(
                     style: TextStyle(
-                      fontSize: 26,
+                      fontSize: 20,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 2,
                       shadows: [
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   isBreak: currentState == TimerState.breakTime,
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 50),
 
                 TimerCircle(
                   time: formattedTime,
@@ -174,10 +174,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   isBreak: currentState == TimerState.breakTime,
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
 
                 ControlButtons(
                   isRunning: isRunning,
+                  isBreak: currentState == TimerState.breakTime,
                   onStart: startTimer,
                   onPause: pauseTimer,
                   onReset: resetTimer,
