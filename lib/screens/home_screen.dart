@@ -6,6 +6,7 @@ import '../utils/constants.dart';
 import '../utils/time_formatter.dart';
 import '../widgets/status_pill.dart';
 import '../widgets/animated_sky_background.dart';
+import '../widgets/pomodoro_progress.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -77,6 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
         startTimer();
       });
     } else if (currentState == TimerState.breakTime) {
+      if (pomodoroCount % 4 == 0) {
+        setState(() {
+          currentState = TimerState.finished;
+          isRunning = false;
+        });
+
+        timer?.cancel();
+        return;
+      }
+
       setState(() {
         currentState = TimerState.working;
         totalSeconds = workSeconds;
@@ -155,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 RichText(
                   text: const TextSpan(
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 2,
                       shadows: [
@@ -182,20 +193,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 70),
+                const SizedBox(height: 90),
 
                 StatusPill(
                   text: statusText,
                   isBreak: currentState == TimerState.breakTime,
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 45),
 
                 TimerCircle(
                   time: formattedTime,
                   progress: progress,
                   isBreak: currentState == TimerState.breakTime,
                 ),
+
+                const SizedBox(height: 30),
+
+                PomodoroProgress(pomodoroCount: pomodoroCount),
 
                 const SizedBox(height: 60),
 

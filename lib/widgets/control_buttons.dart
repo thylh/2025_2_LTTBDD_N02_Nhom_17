@@ -18,23 +18,32 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color mainColor = isBreak ? const Color(0xFF4CAF50) : Colors.orange;
+    const Color mainColor = Color(0xFFE53935);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Row(
         children: [
-          Expanded(child: Container()),
+          const Expanded(child: SizedBox()),
 
           Expanded(
             child: Center(
-              child: IconButton(
-                iconSize: 70,
-                icon: Icon(
-                  isRunning ? Icons.pause : Icons.play_arrow,
-                  color: mainColor,
+              child: GestureDetector(
+                onTap: isRunning ? onPause : onStart,
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: const BoxDecoration(
+                    color: mainColor,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    isRunning ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                    size: 50,
+                  ),
                 ),
-                onPressed: isRunning ? onPause : onStart,
               ),
             ),
           ),
@@ -42,10 +51,17 @@ class ControlButtons extends StatelessWidget {
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
-              child: IconButton(
-                iconSize: 36,
-                icon: Icon(Icons.refresh, color: mainColor),
-                onPressed: onReset,
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: const BoxDecoration(
+                  color: mainColor,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.refresh, color: Colors.white),
+                  onPressed: onReset,
+                ),
               ),
             ),
           ),

@@ -15,22 +15,31 @@ class TimerCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color activeColor = isBreak ? const Color(0xFF4CAF50) : Colors.orange;
+
     return SizedBox(
       width: 250,
       height: 250,
       child: Stack(
         alignment: Alignment.center,
         children: [
-          CustomPaint(
-            size: const Size(250, 250),
-            painter: CirclePainter(progress: progress, isBreak: isBreak),
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: progress),
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+            builder: (context, value, _) {
+              return CustomPaint(
+                size: const Size(250, 250),
+                painter: CirclePainter(progress: value, color: activeColor),
+              );
+            },
           ),
           Text(
             time,
             style: TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.bold,
-              color: isBreak ? const Color(0xFF4CAF50) : Colors.orange,
+              color: activeColor,
             ),
           ),
         ],
@@ -41,13 +50,14 @@ class TimerCircle extends StatelessWidget {
 
 class CirclePainter extends CustomPainter {
   final double progress;
-  final bool isBreak;
+  final Color color;
 
-  CirclePainter({required this.progress, required this.isBreak});
+  CirclePainter({required this.progress, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     const strokeWidth = 14.0;
+
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - strokeWidth / 2;
 
@@ -56,13 +66,12 @@ class CirclePainter extends CustomPainter {
     final basePaint = Paint()
       ..color = Colors.grey.shade300
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.butt;
+      ..strokeWidth = strokeWidth;
 
     canvas.drawArc(rect, -pi / 2, 2 * pi, false, basePaint);
 
     final progressPaint = Paint()
-      ..color = isBreak ? const Color(0xFF4CAF50) : Colors.orange
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
@@ -73,5 +82,7 @@ class CirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CirclePainter oldDelegate) {
+    return oldDelegate.progress != progress || oldDelegate.color != color;
+  }
 }

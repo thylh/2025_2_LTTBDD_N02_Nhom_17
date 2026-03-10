@@ -73,8 +73,8 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
         ),
 
         Positioned(
-          top: 60,
-          right: 40,
+          top: 40,
+          right: 30,
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
