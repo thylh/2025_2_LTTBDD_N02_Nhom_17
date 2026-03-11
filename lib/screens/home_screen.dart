@@ -7,6 +7,7 @@ import '../utils/time_formatter.dart';
 import '../widgets/status_pill.dart';
 import '../widgets/animated_sky_background.dart';
 import '../widgets/pomodoro_progress.dart';
+import '../screens/stat_screen.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -19,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late int totalSeconds;
+
+  int selectedTab = 1;
+
   Timer? timer;
   bool isRunning = false;
 
@@ -66,24 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         currentState = TimerState.breakTime;
-
-        if (pomodoroCount % 4 == 0) {
-          totalSeconds = longBreakSeconds;
-        } else {
-          totalSeconds = breakSeconds;
-        }
+        totalSeconds = (pomodoroCount % 4 == 0)
+            ? longBreakSeconds
+            : breakSeconds;
       });
 
-      Future.delayed(const Duration(seconds: 2), () {
-        startTimer();
-      });
+      Future.delayed(const Duration(seconds: 2), startTimer);
     } else if (currentState == TimerState.breakTime) {
       if (pomodoroCount % 4 == 0) {
         setState(() {
           currentState = TimerState.finished;
           isRunning = false;
         });
-
         timer?.cancel();
         return;
       }
@@ -93,9 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
         totalSeconds = workSeconds;
       });
 
-      Future.delayed(const Duration(seconds: 2), () {
-        startTimer();
-      });
+      Future.delayed(const Duration(seconds: 2), startTimer);
     }
   }
 
@@ -118,26 +114,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String get statusText {
-    if (currentState == TimerState.working) {
-      return "🔥 Working... Stay focused!";
+    switch (currentState) {
+      case TimerState.working:
+        return "🔥 Working... Stay focused!";
+      case TimerState.breakTime:
+        return pomodoroCount % 4 == 0
+            ? "🌴 Long Break... Relax!"
+            : "☕ Short Break... Relax!";
+      case TimerState.finished:
+        return "✅ Pomodoro Finished!";
     }
-
-    if (currentState == TimerState.breakTime) {
-      if (pomodoroCount % 4 == 0) {
-        return "🌴 Long Break... Relax!";
-      }
-
-      return "☕ Short Break... Relax!";
-    }
-
-    return "✅ Pomodoro Finished!";
   }
 
   double get progress {
     if (currentState == TimerState.working) {
       return totalSeconds / workSeconds;
     } else if (currentState == TimerState.breakTime) {
-      return totalSeconds / breakSeconds;
+      return totalSeconds /
+          (pomodoroCount % 4 == 0 ? longBreakSeconds : breakSeconds);
     }
     return 0;
   }
@@ -148,9 +142,76 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  Widget buildTimerUI() {
+    final formattedTime = TimeFormatter.format(totalSeconds);
+
+    return Column(
+      children: [
+        const SizedBox(height: 30),
+
+        RichText(
+          text: const TextSpan(
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 2,
+            ),
+            children: [
+              TextSpan(
+                text: "Focus",
+                style: TextStyle(color: Colors.black),
+              ),
+              TextSpan(
+                text: "Flow...",
+                style: TextStyle(
+                  color: Color(0xFFE53935),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 90),
+
+        StatusPill(
+          text: statusText,
+          isBreak: currentState == TimerState.breakTime,
+        ),
+
+        const SizedBox(height: 45),
+
+        TimerCircle(
+          time: formattedTime,
+          progress: progress,
+          isBreak: currentState == TimerState.breakTime,
+        ),
+
+        const SizedBox(height: 30),
+
+        PomodoroProgress(pomodoroCount: pomodoroCount),
+
+        const SizedBox(height: 60),
+
+        ControlButtons(
+          isRunning: isRunning,
+          isBreak: currentState == TimerState.breakTime,
+          onStart: startTimer,
+          onPause: pauseTimer,
+          onReset: resetTimer,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formattedTime = TimeFormatter.format(totalSeconds);
+    final screens = [
+      const StatsScreen(),
+      buildTimerUI(),
+      const Center(child: Text("Settings")),
+      const Center(child: Text("About")),
+    ];
 
     return Stack(
       children: [
@@ -158,71 +219,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
 
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2,
-                      shadows: [
-                        Shadow(
-                          color: Color(0x66E53935),
-                          blurRadius: 5,
-                          offset: Offset(0, 9),
-                        ),
-                      ],
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Focus",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: "Flow...",
-                        style: TextStyle(
-                          color: Color(0xFFE53935),
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+          body: SafeArea(child: screens[selectedTab]),
 
-                const SizedBox(height: 90),
-
-                StatusPill(
-                  text: statusText,
-                  isBreak: currentState == TimerState.breakTime,
-                ),
-
-                const SizedBox(height: 45),
-
-                TimerCircle(
-                  time: formattedTime,
-                  progress: progress,
-                  isBreak: currentState == TimerState.breakTime,
-                ),
-
-                const SizedBox(height: 30),
-
-                PomodoroProgress(pomodoroCount: pomodoroCount),
-
-                const SizedBox(height: 60),
-
-                ControlButtons(
-                  isRunning: isRunning,
-                  isBreak: currentState == TimerState.breakTime,
-                  onStart: startTimer,
-                  onPause: pauseTimer,
-                  onReset: resetTimer,
-                ),
-              ],
-            ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedTab,
+            onTap: (index) {
+              setState(() {
+                selectedTab = index;
+              });
+            },
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.red,
+            unselectedItemColor: Colors.grey,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart),
+                label: "Stats",
+              ),
+              BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Timer"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: "Settings",
+              ),
+              BottomNavigationBarItem(icon: Icon(Icons.info), label: "About"),
+            ],
           ),
         ),
       ],
