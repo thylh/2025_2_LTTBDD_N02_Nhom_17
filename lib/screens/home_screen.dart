@@ -7,6 +7,7 @@ import '../utils/time_formatter.dart';
 import '../widgets/status_pill.dart';
 import '../widgets/animated_sky_background.dart';
 import '../widgets/pomodoro_progress.dart';
+import '../widgets/landscape.dart';
 import '../screens/stat_screen.dart';
 
 enum TimerState { working, breakTime, finished }
@@ -230,8 +231,12 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.red,
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
+            selectedItemColor: Color(0xFFE53935),
             unselectedItemColor: Colors.grey,
+            selectedFontSize: 15,
+            iconSize: 26,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.bar_chart),
@@ -245,6 +250,13 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(icon: Icon(Icons.info), label: "About"),
             ],
           ),
+        ),
+
+        const Positioned(
+          bottom: 60,
+          left: 0,
+          right: 0,
+          child: LandscapeWidget(),
         ),
       ],
     );
