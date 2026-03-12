@@ -14,7 +14,7 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
 
   late AnimationController controller;
 
-  final int cloudCount = 6;
+  final int cloudCount = 8;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
   }
 
   Widget buildCloud(double screenWidth, int index) {
-    final top = random.nextDouble() * 360 + 10;
+    final top = random.nextDouble() * 700 + 5;
     final size = random.nextDouble() * 40 + 40;
     final speedOffset = random.nextDouble();
 

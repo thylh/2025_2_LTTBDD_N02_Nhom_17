@@ -9,6 +9,8 @@ import '../widgets/animated_sky_background.dart';
 import '../widgets/pomodoro_progress.dart';
 import '../widgets/landscape.dart';
 import '../screens/stat_screen.dart';
+import '../services/session_repository.dart';
+import '../models/focus_session.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -67,6 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void handlePhaseComplete() {
     if (currentState == TimerState.working) {
+      SessionRepository.addSession(
+        FocusSession(date: DateTime.now(), duration: workSeconds),
+      );
       pomodoroCount++;
 
       setState(() {
