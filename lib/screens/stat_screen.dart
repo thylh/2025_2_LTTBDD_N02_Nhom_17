@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/today_stats_card.dart';
+import '../widgets/total_focus_card.dart';
 import '../services/session_repository.dart';
 import '../services/stats_service.dart';
 import '../widgets/animated_sky_background.dart';
@@ -16,6 +17,8 @@ class StatsScreen extends StatelessWidget {
     final todayPomodoros = statsService.getTodayPomodoros(sessions);
     final todaySeconds = statsService.getTodayFocusSeconds(sessions);
     final focusTime = TimeFormatter.format(todaySeconds);
+    final totalSeconds = statsService.getTotalFocusSeconds(sessions);
+    final totalFocusTime = TimeFormatter.format(totalSeconds);
     final realWeekly = statsService.getWeeklyPomodoros(sessions);
     final realMonthly = statsService.getMonthlyPomodoros(sessions);
     final realYearly = statsService.getYearlyPomodoros(sessions);
@@ -84,6 +87,11 @@ class StatsScreen extends StatelessWidget {
                     focusTime: focusTime,
                     pomodoros: todayPomodoros,
                   ),
+
+                  const SizedBox(height: 18),
+
+                  TotalFocusCard(totalTime: totalFocusTime),
+
                   const SizedBox(height: 18),
 
                   StatsCharts(

@@ -27,6 +27,16 @@ class StatsService {
         .fold(0, (sum, session) => sum + session.duration);
   }
 
+  int getTotalFocusSeconds(List<FocusSession> sessions) {
+    int total = 0;
+
+    for (var s in sessions) {
+      total += s.duration;
+    }
+
+    return total;
+  }
+
   List<int> getWeeklyPomodoros(List<FocusSession> sessions) {
     List<int> result = List.filled(7, 0);
 

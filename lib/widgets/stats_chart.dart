@@ -26,7 +26,7 @@ class _StatsChartsState extends State<StatsCharts> {
     return Column(
       children: [
         SizedBox(
-          height: 244,
+          height: 247,
 
           child: PageView(
             controller: _controller,
@@ -125,7 +125,7 @@ class _StatsChartsState extends State<StatsCharts> {
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
