@@ -36,10 +36,38 @@ class StatsService {
       int diff = now.difference(session.date).inDays;
 
       if (diff >= 0 && diff < 7) {
-        result[6 - diff] += 1;
+        int index = session.date.weekday - 1;
+
+        result[index] += 1;
       }
     }
 
     return result;
+  }
+
+  List<int> getMonthlyPomodoros(List<FocusSession> sessions) {
+    List<int> weeks = [0, 0, 0, 0];
+
+    for (var session in sessions) {
+      int weekOfMonth = ((session.date.day - 1) / 7).floor();
+
+      if (weekOfMonth < 5) {
+        weeks[weekOfMonth]++;
+      }
+    }
+
+    return weeks;
+  }
+
+  List<int> getYearlyPomodoros(List<FocusSession> sessions) {
+    List<int> months = List.filled(12, 0);
+
+    for (var session in sessions) {
+      int monthIndex = session.date.month - 1;
+
+      months[monthIndex]++;
+    }
+
+    return months;
   }
 }
