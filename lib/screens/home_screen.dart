@@ -11,6 +11,7 @@ import '../widgets/landscape.dart';
 import '../screens/stat_screen.dart';
 import '../services/session_repository.dart';
 import '../models/focus_session.dart';
+import '../screens/setting_screen.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -128,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? "🌴 Long Break... Relax!"
             : "☕ Short Break... Relax!";
       case TimerState.finished:
-        return "✅ Pomodoro Finished!";
+        return "✅ Completed! Congratulation.";
     }
   }
 
@@ -215,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final screens = [
       const StatsScreen(),
       buildTimerUI(),
-      const Center(child: Text("Settings")),
+      const SettingsScreen(),
       const Center(child: Text("About")),
     ];
 

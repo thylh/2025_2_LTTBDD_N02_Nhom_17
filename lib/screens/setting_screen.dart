@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/animated_sky_background.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -8,111 +9,145 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  double focusMinutes = 25;
-  double breakMinutes = 5;
-
+  bool isDarkMode = false;
   bool soundEnabled = true;
   bool notificationEnabled = true;
 
+  String selectedLanguage = "English";
+
+  final List<String> languages = ["English", "Tiếng Việt"];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Settings"), centerTitle: true),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          /// Focus Time
-          const Text(
-            "Focus Time",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Slider(
-            value: focusMinutes,
-            min: 15,
-            max: 60,
-            divisions: 9,
-            label: "${focusMinutes.round()} min",
-            onChanged: (value) {
-              setState(() {
-                focusMinutes = value;
-              });
-            },
-          ),
-          Text(
-            "${focusMinutes.round()} minutes",
-            style: const TextStyle(fontSize: 16),
-          ),
+    return Stack(
+      children: [
+        const AnimatedSkyBackground(),
 
-          const SizedBox(height: 30),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 30),
 
-          /// Break Time
-          const Text(
-            "Break Time",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Slider(
-            value: breakMinutes,
-            min: 3,
-            max: 20,
-            divisions: 17,
-            label: "${breakMinutes.round()} min",
-            onChanged: (value) {
-              setState(() {
-                breakMinutes = value;
-              });
-            },
-          ),
-          Text(
-            "${breakMinutes.round()} minutes",
-            style: const TextStyle(fontSize: 16),
-          ),
+                  const Text(
+                    "Settings",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFFE53935),
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
 
-          const SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
-          /// Sound
-          SwitchListTile(
-            title: const Text("Sound"),
-            subtitle: const Text("Play sound when timer finishes"),
-            value: soundEnabled,
-            onChanged: (value) {
-              setState(() {
-                soundEnabled = value;
-              });
-            },
-          ),
+                  Expanded(
+                    child: Card(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: ListView(
+                          children: [
+                            const Text(
+                              "Language",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
 
-          /// Notification
-          SwitchListTile(
-            title: const Text("Notification"),
-            subtitle: const Text("Receive timer notifications"),
-            value: notificationEnabled,
-            onChanged: (value) {
-              setState(() {
-                notificationEnabled = value;
-              });
-            },
-          ),
+                            const SizedBox(height: 10),
 
-          const Divider(height: 40),
+                            DropdownButtonFormField<String>(
+                              initialValue: selectedLanguage,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              items: languages
+                                  .map(
+                                    (lang) => DropdownMenuItem(
+                                      value: lang,
+                                      child: Text(lang),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  selectedLanguage = value;
+                                });
+                              },
+                            ),
 
-          /// About
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: const Text("About"),
-            subtitle: const Text("Pomodoro Timer App"),
-            onTap: () {
-              showAboutDialog(
-                context: context,
-                applicationName: "Pomodoro Timer",
-                applicationVersion: "1.0.0",
-                children: const [
-                  Text("Simple productivity timer using Pomodoro technique."),
+                            const SizedBox(height: 30),
+
+                            const Text(
+                              "Appearance",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            SwitchListTile(
+                              title: const Text("Dark Mode"),
+                              subtitle: const Text(
+                                "Switch between light and dark theme",
+                              ),
+                              value: isDarkMode,
+                              onChanged: (value) {
+                                setState(() {
+                                  isDarkMode = value;
+                                });
+                              },
+                            ),
+
+                            const Divider(height: 40),
+
+                            SwitchListTile(
+                              title: const Text("Sound"),
+                              subtitle: const Text(
+                                "Play sound when timer finishes",
+                              ),
+                              value: soundEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  soundEnabled = value;
+                                });
+                              },
+                            ),
+
+                            SwitchListTile(
+                              title: const Text("Notification"),
+                              subtitle: const Text(
+                                "Receive timer notifications",
+                              ),
+                              value: notificationEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  notificationEnabled = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
-              );
-            },
+              ),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
