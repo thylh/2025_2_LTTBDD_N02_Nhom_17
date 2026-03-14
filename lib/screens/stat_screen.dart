@@ -89,11 +89,11 @@ class StatsScreen extends StatelessWidget {
                     pomodoros: todayPomodoros,
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 20),
 
                   TotalFocusCard(totalTime: totalFocusTime),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 20),
 
                   StatsCharts(
                     weeklyData: weeklyData,

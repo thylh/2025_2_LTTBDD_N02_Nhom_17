@@ -29,7 +29,6 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
       duration: const Duration(seconds: 40),
     )..repeat();
 
-    /// tạo vị trí cloud cố định
     cloudTops = List.generate(cloudCount, (_) => random.nextDouble() * 650 + 5);
     cloudSizes = List.generate(
       cloudCount,
@@ -122,7 +121,6 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
           ),
         ),
 
-        /// Clouds / Stars
         ...List.generate(
           cloudCount,
           (index) => buildCloud(screenWidth, index, isDark),

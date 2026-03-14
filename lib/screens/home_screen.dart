@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:focusflow/screens/about_screen.dart';
 import '../widgets/timer_circle.dart';
 import '../widgets/control_buttons.dart';
 import '../utils/constants.dart';
@@ -219,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const StatsScreen(),
       buildTimerUI(),
       const SettingsScreen(),
-      const Center(child: Text("About")),
+      const AboutScreen(),
     ];
 
     return Stack(
