@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/app_language.dart';
 
 class TotalFocusCard extends StatelessWidget {
   final String totalTime;
@@ -45,9 +46,12 @@ class TotalFocusCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Total Focus",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  Text(
+                    AppLanguage.t("total_focus"),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
 
                   const SizedBox(height: 4),

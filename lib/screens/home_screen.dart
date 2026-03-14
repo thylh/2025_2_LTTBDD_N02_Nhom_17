@@ -12,6 +12,7 @@ import '../screens/stat_screen.dart';
 import '../services/session_repository.dart';
 import '../models/focus_session.dart';
 import '../screens/setting_screen.dart';
+import '../services/app_language.dart';
 
 enum TimerState { working, breakTime, finished }
 
@@ -123,13 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
   String get statusText {
     switch (currentState) {
       case TimerState.working:
-        return "🔥 Working... Stay focused!";
+        return "🔥 ${AppLanguage.t("working")}";
       case TimerState.breakTime:
         return pomodoroCount % 4 == 0
-            ? "🌴 Long Break... Relax!"
-            : "☕ Short Break... Relax!";
+            ? "🌴 ${AppLanguage.t("long_break")}"
+            : "☕ ${AppLanguage.t("short_break")}";
       case TimerState.finished:
-        return "✅ Completed! Congratulation.";
+        return "✅ ${AppLanguage.t("completed")}";
     }
   }
 
@@ -243,17 +244,23 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedItemColor: Colors.grey,
             selectedFontSize: 15,
             iconSize: 26,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart),
-                label: "Stats",
+                icon: const Icon(Icons.bar_chart),
+                label: AppLanguage.t("stats"),
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Timer"),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Settings",
+                icon: const Icon(Icons.timer),
+                label: AppLanguage.t("timer"),
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.info), label: "About"),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.settings),
+                label: AppLanguage.t("settings"),
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.info),
+                label: AppLanguage.t("about"),
+              ),
             ],
           ),
         ),

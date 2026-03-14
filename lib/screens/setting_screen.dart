@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/animated_sky_background.dart';
+import '../services/app_language.dart';
+// import '../screens/home_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -33,9 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   const SizedBox(height: 30),
 
-                  const Text(
-                    "Settings",
-                    style: TextStyle(
+                  Text(
+                    AppLanguage.t("settings"),
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFFE53935),
@@ -56,9 +58,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         padding: const EdgeInsets.all(20),
                         child: ListView(
                           children: [
-                            const Text(
-                              "Language",
-                              style: TextStyle(
+                            Text(
+                              AppLanguage.t("language"),
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -81,24 +83,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   .toList(),
                               onChanged: (value) {
                                 if (value == null) return;
+
                                 setState(() {
                                   selectedLanguage = value;
                                 });
+
+                                if (value == "English") {
+                                  AppLanguage.languageNotifier.value = "en";
+                                } else {
+                                  AppLanguage.languageNotifier.value = "vi";
+                                }
+
+                                setState(() {});
                               },
                             ),
 
                             const SizedBox(height: 30),
 
-                            const Text(
-                              "Appearance",
-                              style: TextStyle(
+                            Text(
+                              AppLanguage.t("appearance"),
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
 
                             SwitchListTile(
-                              title: const Text("Dark Mode"),
+                              title: Text(AppLanguage.t("dark_mode")),
                               subtitle: const Text(
                                 "Switch between light and dark theme",
                               ),
@@ -113,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             const Divider(height: 40),
 
                             SwitchListTile(
-                              title: const Text("Sound"),
+                              title: Text(AppLanguage.t("sound")),
                               subtitle: const Text(
                                 "Play sound when timer finishes",
                               ),
@@ -126,7 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
 
                             SwitchListTile(
-                              title: const Text("Notification"),
+                              title: Text(AppLanguage.t("notification")),
                               subtitle: const Text(
                                 "Receive timer notifications",
                               ),

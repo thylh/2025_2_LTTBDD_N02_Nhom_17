@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../services/app_language.dart';
 
 class StatsCharts extends StatefulWidget {
   final List<int> weeklyData;
@@ -27,18 +28,15 @@ class _StatsChartsState extends State<StatsCharts> {
       children: [
         SizedBox(
           height: 247,
-
           child: PageView(
             controller: _controller,
-
             onPageChanged: (index) {
               setState(() {
                 currentPage = index;
               });
             },
-
             children: [
-              _buildChartCard("Weekly Activity", [
+              _buildChartCard(AppLanguage.t("weekly_activity"), [
                 "Mon",
                 "Tue",
                 "Wed",
@@ -48,14 +46,14 @@ class _StatsChartsState extends State<StatsCharts> {
                 "Sun",
               ], widget.weeklyData),
 
-              _buildChartCard("Monthly Focus", [
+              _buildChartCard(AppLanguage.t("monthly_focus"), [
                 "W1",
                 "W2",
                 "W3",
                 "W4",
               ], widget.monthlyData),
 
-              _buildChartCard("Yearly Focus", [
+              _buildChartCard(AppLanguage.t("yearly_focus"), [
                 "Jan",
                 "Feb",
                 "Mar",
@@ -83,21 +81,16 @@ class _StatsChartsState extends State<StatsCharts> {
   Widget _buildIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-
       children: List.generate(3, (index) {
         bool active = currentPage == index;
 
         return AnimatedContainer(
           duration: const Duration(milliseconds: 250),
-
           margin: const EdgeInsets.symmetric(horizontal: 4),
-
           width: active ? 18 : 8,
           height: 8,
-
           decoration: BoxDecoration(
             color: active ? const Color(0xFFE53935) : Colors.grey.shade400,
-
             borderRadius: BorderRadius.circular(20),
           ),
         );
@@ -110,15 +103,11 @@ class _StatsChartsState extends State<StatsCharts> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0),
-
       child: Card(
         color: Colors.white,
-
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-
         child: Padding(
           padding: const EdgeInsets.all(20),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -134,7 +123,6 @@ class _StatsChartsState extends State<StatsCharts> {
 
               SizedBox(
                 height: 150,
-
                 child: BarChart(
                   BarChartData(
                     maxY: maxY,
@@ -157,7 +145,6 @@ class _StatsChartsState extends State<StatsCharts> {
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-
                           getTitlesWidget: (value, meta) {
                             int index = value.toInt();
 
@@ -176,6 +163,7 @@ class _StatsChartsState extends State<StatsCharts> {
                         ),
                       ),
                     ),
+
                     barGroups: List.generate(
                       data.length,
                       (i) => BarChartGroupData(

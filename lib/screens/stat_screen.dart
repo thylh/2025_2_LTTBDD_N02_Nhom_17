@@ -6,6 +6,7 @@ import '../services/stats_service.dart';
 import '../widgets/animated_sky_background.dart';
 import '../utils/time_formatter.dart';
 import '../widgets/stats_chart.dart';
+import '../services/app_language.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
@@ -70,9 +71,9 @@ class StatsScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 30),
 
-                  const Text(
-                    "Statistics",
-                    style: TextStyle(
+                  Text(
+                    AppLanguage.t("statistics"),
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFFE53935),

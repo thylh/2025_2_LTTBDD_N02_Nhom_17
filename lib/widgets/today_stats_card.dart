@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/app_language.dart';
 
 class TodayStatsCard extends StatelessWidget {
   final String focusTime;
@@ -20,23 +21,29 @@ class TodayStatsCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Today",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              AppLanguage.t("today"),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text("⏱ Focus Time"), Text(focusTime)],
+              children: [
+                Text("⏱ ${AppLanguage.t("focus_time")}"),
+                Text(focusTime),
+              ],
             ),
 
             const SizedBox(height: 10),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text("🍅 Pomodoros"), Text("$pomodoros")],
+              children: [
+                Text("🍅 ${AppLanguage.t("pomodoros")}"),
+                Text("$pomodoros"),
+              ],
             ),
           ],
         ),
