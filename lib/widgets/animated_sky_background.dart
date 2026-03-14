@@ -16,6 +16,10 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
 
   final int cloudCount = 8;
 
+  late List<double> cloudTops;
+  late List<double> cloudSizes;
+  late List<double> cloudOffsets;
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +28,14 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
       vsync: this,
       duration: const Duration(seconds: 40),
     )..repeat();
+
+    /// tạo vị trí cloud cố định
+    cloudTops = List.generate(cloudCount, (_) => random.nextDouble() * 650 + 5);
+    cloudSizes = List.generate(
+      cloudCount,
+      (_) => random.nextDouble() * 40 + 40,
+    );
+    cloudOffsets = List.generate(cloudCount, (_) => random.nextDouble());
   }
 
   @override
@@ -32,10 +44,10 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
     super.dispose();
   }
 
-  Widget buildCloud(double screenWidth, int index) {
-    final top = random.nextDouble() * 650 + 5;
-    final size = random.nextDouble() * 40 + 40;
-    final speedOffset = random.nextDouble();
+  Widget buildCloud(double screenWidth, int index, bool isDark) {
+    final top = cloudTops[index];
+    final size = cloudSizes[index];
+    final speedOffset = cloudOffsets[index];
 
     return AnimatedBuilder(
       animation: controller,
@@ -47,9 +59,11 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
           top: top,
           left: movement,
           child: Icon(
-            Icons.cloud,
+            isDark ? Icons.star : Icons.cloud,
             size: size,
-            color: Colors.white.withValues(alpha: 0.9),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.8)
+                : Colors.white.withValues(alpha: 0.9),
           ),
         );
       },
@@ -60,12 +74,24 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFE3F2FD), Color(0xFFBBDEFB), Color(0xFFFFFFFF)],
+              colors: isDark
+                  ? [
+                      const Color(0xFF1A2F38),
+                      const Color(0xFF2B4A55),
+                      const Color(0xFF3B6375),
+                    ]
+                  : [
+                      const Color(0xFFE3F2FD),
+                      const Color(0xFFBBDEFB),
+                      const Color(0xFFFFFFFF),
+                    ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -80,17 +106,27 @@ class _AnimatedSkyBackgroundState extends State<AnimatedSkyBackground>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.orange.withValues(alpha: 0.4),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : Colors.orange.withValues(alpha: 0.4),
                   blurRadius: 40,
                   spreadRadius: 10,
                 ),
               ],
             ),
-            child: const Icon(Icons.wb_sunny, size: 80, color: Colors.orange),
+            child: Icon(
+              isDark ? Icons.nightlight_round : Icons.wb_sunny,
+              size: 80,
+              color: isDark ? Colors.white : Colors.orange,
+            ),
           ),
         ),
 
-        ...List.generate(cloudCount, (index) => buildCloud(screenWidth, index)),
+        /// Clouds / Stars
+        ...List.generate(
+          cloudCount,
+          (index) => buildCloud(screenWidth, index, isDark),
+        ),
       ],
     );
   }

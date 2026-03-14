@@ -152,14 +152,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildTimerUI() {
     final formattedTime = TimeFormatter.format(totalSeconds);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       children: [
         const SizedBox(height: 30),
 
         RichText(
-          text: const TextSpan(
-            style: TextStyle(
+          text: TextSpan(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w900,
               letterSpacing: 2,
@@ -167,9 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TextSpan(
                 text: "Focus",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: isDark ? Colors.white : Colors.black),
               ),
-              TextSpan(
+              const TextSpan(
                 text: "Flow...",
                 style: TextStyle(
                   color: Color(0xFFE53935),
@@ -240,10 +241,16 @@ class _HomeScreenState extends State<HomeScreen> {
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,
             showUnselectedLabels: false,
-            selectedItemColor: Color(0xFFE53935),
-            unselectedItemColor: Colors.grey,
+            selectedItemColor: const Color(0xFFE53935),
+            unselectedItemColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white70
+                : Colors.grey,
             selectedFontSize: 15,
             iconSize: 26,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF3A3A50)
+                : Colors.white,
+
             items: [
               BottomNavigationBarItem(
                 icon: const Icon(Icons.bar_chart),

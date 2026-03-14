@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/animated_sky_background.dart';
 import '../services/app_language.dart';
-// import '../screens/home_screen.dart';
+import '../services/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,7 +11,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool isDarkMode = false;
   bool soundEnabled = true;
   bool notificationEnabled = true;
 
@@ -21,6 +20,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       children: [
         const AnimatedSkyBackground(),
@@ -50,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                   Expanded(
                     child: Card(
-                      color: Colors.white,
+                      color: isDark ? const Color(0xFF2A2A3C) : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
@@ -60,9 +61,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               AppLanguage.t("language"),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                             ),
 
@@ -73,8 +75,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   AppLanguage.languageNotifier.value == "vi"
                                   ? "Tiếng Việt"
                                   : "English",
+                              dropdownColor: isDark
+                                  ? const Color(0xFF2A2A3C)
+                                  : null,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
+                              ),
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                               items: languages
                                   .map(
@@ -103,28 +111,58 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                             Text(
                               AppLanguage.t("appearance"),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                             ),
 
-                            SwitchListTile(
-                              title: Text(AppLanguage.t("dark_mode")),
-                              subtitle: Text(AppLanguage.t("theme_switch")),
-                              value: isDarkMode,
-                              onChanged: (value) {
-                                setState(() {
-                                  isDarkMode = value;
-                                });
+                            ValueListenableBuilder(
+                              valueListenable: AppTheme.themeNotifier,
+                              builder: (context, themeMode, child) {
+                                return SwitchListTile(
+                                  title: Text(
+                                    AppLanguage.t("dark_mode"),
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    AppLanguage.t("theme_switch"),
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black54,
+                                    ),
+                                  ),
+                                  value: themeMode == ThemeMode.dark,
+                                  onChanged: (value) {
+                                    AppTheme.toggleTheme(value);
+                                  },
+                                );
                               },
                             ),
 
                             const Divider(height: 40),
 
                             SwitchListTile(
-                              title: Text(AppLanguage.t("sound")),
-                              subtitle: Text(AppLanguage.t("sound_finish")),
+                              title: Text(
+                                AppLanguage.t("sound"),
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              subtitle: Text(
+                                AppLanguage.t("sound_finish"),
+                                style: TextStyle(
+                                  color: isDark
+                                      ? Colors.white70
+                                      : Colors.black54,
+                                ),
+                              ),
                               value: soundEnabled,
                               onChanged: (value) {
                                 setState(() {
@@ -134,9 +172,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
 
                             SwitchListTile(
-                              title: Text(AppLanguage.t("notification")),
+                              title: Text(
+                                AppLanguage.t("notification"),
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                              ),
                               subtitle: Text(
                                 AppLanguage.t("notification_receive"),
+                                style: TextStyle(
+                                  color: isDark
+                                      ? Colors.white70
+                                      : Colors.black54,
+                                ),
                               ),
                               value: notificationEnabled,
                               onChanged: (value) {

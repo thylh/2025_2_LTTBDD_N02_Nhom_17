@@ -24,6 +24,8 @@ class _StatsChartsState extends State<StatsCharts> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
         SizedBox(
@@ -36,24 +38,20 @@ class _StatsChartsState extends State<StatsCharts> {
               });
             },
             children: [
-              _buildChartCard(AppLanguage.t("weekly_activity"), [
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat",
-                "Sun",
-              ], widget.weeklyData),
-
-              _buildChartCard(AppLanguage.t("monthly_focus"), [
+              _buildChartCard(
+                context,
+                isDark,
+                AppLanguage.t("weekly_activity"),
+                ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                widget.weeklyData,
+              ),
+              _buildChartCard(context, isDark, AppLanguage.t("monthly_focus"), [
                 "W1",
                 "W2",
                 "W3",
                 "W4",
               ], widget.monthlyData),
-
-              _buildChartCard(AppLanguage.t("yearly_focus"), [
+              _buildChartCard(context, isDark, AppLanguage.t("yearly_focus"), [
                 "Jan",
                 "Feb",
                 "Mar",
@@ -70,9 +68,7 @@ class _StatsChartsState extends State<StatsCharts> {
             ],
           ),
         ),
-
         const SizedBox(height: 10),
-
         _buildIndicator(),
       ],
     );
@@ -98,13 +94,19 @@ class _StatsChartsState extends State<StatsCharts> {
     );
   }
 
-  Widget _buildChartCard(String title, List<String> labels, List<int> data) {
+  Widget _buildChartCard(
+    BuildContext context,
+    bool isDark,
+    String title,
+    List<String> labels,
+    List<int> data,
+  ) {
     double maxY = (data.reduce((a, b) => a > b ? a : b) + 2).toDouble();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Card(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF2A2A3C) : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -113,14 +115,13 @@ class _StatsChartsState extends State<StatsCharts> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 height: 150,
                 child: BarChart(
@@ -128,42 +129,40 @@ class _StatsChartsState extends State<StatsCharts> {
                     maxY: maxY,
                     alignment: BarChartAlignment.spaceAround,
                     borderData: FlBorderData(show: false),
-
                     titlesData: FlTitlesData(
                       topTitles: AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-
                       rightTitles: AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
                             int index = value.toInt();
-
                             if (index < 0 || index >= labels.length) {
                               return const SizedBox();
                             }
-
                             return Padding(
                               padding: const EdgeInsets.only(top: 6),
                               child: Text(
                                 labels[index],
-                                style: const TextStyle(fontSize: 10),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: isDark
+                                      ? Colors.white70
+                                      : Colors.black87,
+                                ),
                               ),
                             );
                           },
                         ),
                       ),
                     ),
-
                     barGroups: List.generate(
                       data.length,
                       (i) => BarChartGroupData(

@@ -26,16 +26,15 @@ class TotalFocusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Align(
       alignment: Alignment.centerLeft,
-
       child: Card(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF2A2A3C) : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -48,9 +47,10 @@ class TotalFocusCard extends StatelessWidget {
                 children: [
                   Text(
                     AppLanguage.t("total_focus"),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black,
                     ),
                   ),
 

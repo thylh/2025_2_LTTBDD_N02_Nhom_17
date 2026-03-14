@@ -13,8 +13,10 @@ class TodayStatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Card(
-      color: Colors.white,
+      color: isDark ? const Color(0xFF2A2A3C) : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -23,7 +25,11 @@ class TodayStatsCard extends StatelessWidget {
           children: [
             Text(
               AppLanguage.t("today"),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black,
+              ),
             ),
 
             const SizedBox(height: 20),
@@ -31,8 +37,16 @@ class TodayStatsCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("⏱ ${AppLanguage.t("focus_time")}"),
-                Text(focusTime),
+                Text(
+                  "⏱ ${AppLanguage.t("focus_time")}",
+                  style: TextStyle(
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
+                Text(
+                  focusTime,
+                  style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                ),
               ],
             ),
 
@@ -41,8 +55,16 @@ class TodayStatsCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("🍅 ${AppLanguage.t("pomodoros")}"),
-                Text("$pomodoros"),
+                Text(
+                  "🍅 ${AppLanguage.t("pomodoros")}",
+                  style: TextStyle(
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
+                Text(
+                  "$pomodoros",
+                  style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                ),
               ],
             ),
           ],
