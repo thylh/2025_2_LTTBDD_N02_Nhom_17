@@ -49,7 +49,7 @@ class TotalFocusCard extends StatelessWidget {
                   Text(
                     AppLanguage.t("total_focus"),
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

@@ -26,6 +26,9 @@ class AppLanguage {
       "weekly_activity": "Weekly Activity",
       "monthly_focus": "Monthly Focus",
       "yearly_focus": "Yearly Focus",
+      "theme_switch": "Switch between light and dark theme",
+      "sound_finish": "Play sound when timer finishes",
+      "notification_receive": "Receive timer notifications",
     },
 
     "vi": {
@@ -50,6 +53,9 @@ class AppLanguage {
       "weekly_activity": "Hoạt động tuần",
       "monthly_focus": "Tập trung tháng",
       "yearly_focus": "Tập trung năm",
+      "theme_switch": "Chuyển đổi giữa giao diện sáng và tối",
+      "sound_finish": "Phát âm thanh khi bộ đếm kết thúc",
+      "notification_receive": "Nhận thông báo từ bộ đếm",
     },
   };
 

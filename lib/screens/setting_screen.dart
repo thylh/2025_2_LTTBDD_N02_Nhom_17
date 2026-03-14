@@ -61,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Text(
                               AppLanguage.t("language"),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -69,7 +69,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             const SizedBox(height: 10),
 
                             DropdownButtonFormField<String>(
-                              initialValue: selectedLanguage,
+                              initialValue:
+                                  AppLanguage.languageNotifier.value == "vi"
+                                  ? "Tiếng Việt"
+                                  : "English",
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                               ),
@@ -93,8 +96,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 } else {
                                   AppLanguage.languageNotifier.value = "vi";
                                 }
-
-                                setState(() {});
                               },
                             ),
 
@@ -103,16 +104,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Text(
                               AppLanguage.t("appearance"),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
 
                             SwitchListTile(
                               title: Text(AppLanguage.t("dark_mode")),
-                              subtitle: const Text(
-                                "Switch between light and dark theme",
-                              ),
+                              subtitle: Text(AppLanguage.t("theme_switch")),
                               value: isDarkMode,
                               onChanged: (value) {
                                 setState(() {
@@ -125,9 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                             SwitchListTile(
                               title: Text(AppLanguage.t("sound")),
-                              subtitle: const Text(
-                                "Play sound when timer finishes",
-                              ),
+                              subtitle: Text(AppLanguage.t("sound_finish")),
                               value: soundEnabled,
                               onChanged: (value) {
                                 setState(() {
@@ -138,8 +135,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                             SwitchListTile(
                               title: Text(AppLanguage.t("notification")),
-                              subtitle: const Text(
-                                "Receive timer notifications",
+                              subtitle: Text(
+                                AppLanguage.t("notification_receive"),
                               ),
                               value: notificationEnabled,
                               onChanged: (value) {
